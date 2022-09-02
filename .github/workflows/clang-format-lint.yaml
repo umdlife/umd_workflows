@@ -1,0 +1,25 @@
+name: Run clang-format Linter
+
+on:
+  workflow_call:
+jobs:
+  cpp-check:
+    runs-on: self-hosted
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        ref: ${{ github.head_ref }}
+
+    - uses: DoozyX/clang-format-lint-action@v0.14
+      with:
+        source: '.'
+        extensions: 'h,c,cpp,hpp'
+        clangFormatVersion: 14
+        inplace: True
+      continue-on-error: true
+
+    - uses: EndBug/add-and-commit@v9.1.0
+      with:
+        author_name: UMLDev Clang Robot
+        author_email: dev@unmanned.life
+        message: 'Committing clang-format changes'
