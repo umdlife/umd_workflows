@@ -22,6 +22,8 @@ on:
         required: true
       DOCKERHUB_TOKEN:
         required: true
+    env:
+      GH_TOKEN: ${{ secrets.PAT }}
 jobs:
   rebuild_docker:
     runs-on: self-hosted
@@ -46,14 +48,10 @@ jobs:
         submodules: recursive
         path: ${{ inputs.repository }}
 
-    - env:
-        GH_TOKEN: ${{ secrets.PAT }}
-
     - name: Checkout Branch Recursive Submodules
       shell: bash
       run: |
         cd ${{ inputs.repository }}
-        gh auth login
         git submodule foreach --recursive "git checkout ${{ github.head_ref }} || :"
 
     - name: Build Docker Image
