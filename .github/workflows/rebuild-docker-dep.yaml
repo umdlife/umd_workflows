@@ -51,7 +51,7 @@ jobs:
       shell: bash
       run: |
         cd ${{ inputs.repository }}
-        git submodule foreach --recursive "gh pr checkout main || :"
+        git submodule foreach --recursive "git checkout main || :"
 
     - name: Build Docker Image
       uses: umdlife/umd_workflows/docker-build-push-action@main
