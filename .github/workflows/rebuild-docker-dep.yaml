@@ -22,11 +22,12 @@ on:
         required: true
       DOCKERHUB_TOKEN:
         required: true
-    env:
-      GH_TOKEN: ${{ secrets.PAT }}
+    
 jobs:
   rebuild_docker:
     runs-on: self-hosted
+    env:
+      GH_TOKEN: ${{ secrets.PAT }}
     steps:
     - name: Check Out Repo 
       uses: actions/checkout@v3
