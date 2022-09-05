@@ -30,12 +30,17 @@ jobs:
         ref: ${{ github.head_ref }}
 
     - name: Build Docker Image
-      uses: umdlife/umd_workflows/docker-build-push-action@main
+      uses: umdlife/umd_workflows/setup-docker-env-action@main
       with:
-        context: ../
-        dockerfile: ./docker/Dockerfile
-        arch: ${{ inputs.arch }}
-        stage: ${{ inputs.stage }}
-        push: false
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         token: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Build and push
+      id: docker_build
+      uses: docker/build-push-action@v3
+      with:
+        context: ./
+        file: ./docker/Dockerfile
+        platforms: ${{ inputs.arch }}
+        target: ${{ inputs.stage }}
+        push: false

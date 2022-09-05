@@ -1,0 +1,103 @@
+name: Push Platform Docker
+
+on:
+  workflow_call:
+    secrets:
+      PAT: 
+        required: true
+      DOCKERHUB_USERNAME:
+        required: true
+      DOCKERHUB_TOKEN:
+        required: true
+jobs:
+  rebuild_docker:
+    runs-on: self-hosted
+    steps:
+    - name: Check Out Current Repo 
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: '0'
+        submodules: recursive
+        token: ${{ secrets.PAT }}
+        ref: ${{ github.head_ref }}
+    
+    - name: Get Repo name
+      shell: bash
+      run: |
+        echo "IMAGE_NAME=${{ github.event.repository.name//_/- }}" >> $GITHUB_ENV
+        echo "$IMAGE_NAME"
+
+    - name: Set Bump 
+      run: |
+        if [[ ${{ github.ref_name }} == "main" ]]; then
+          echo "BUMP=major" >> $GITHUB_ENV
+        elif [[ ${{ github.ref_name }} == "qa" ]]; then
+          echo "BUMP=minor" >> $GITHUB_ENV
+        elif [[ ${{ github.ref_name }} == "dev" ]]; then
+          echo "BUMP=patch" >> $GITHUB_ENV
+        fi
+
+    - name: Bump version
+      uses: anothrNick/github-tag-action@1.39.0
+      id: autoversion
+      env:
+        GITHUB_TOKEN: ${{ secrets.PAT }}
+        INITIAL_VERSION: 1.0.0
+        DRY_RUN: true
+        WITH_V: true
+        DEFAULT_BUMP: ${{ env.BUMP }}
+        RELEASE_BRANCHES: dev,qa,main
+
+    - name: Build Docker Image
+      uses: umdlife/umd_workflows/setup-docker-env-action@main
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        token: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Push dev image from dev branch
+      id: push-dev-image-dev-branch
+      if: github.ref_name == 'dev'
+      uses: docker/build-push-action@v3
+      with:
+        context: ../
+        file: ./docker/Dockerfile
+        platforms: linux/amd64, linux/arm64
+        push: true
+        target: dev_stage
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-dev:${{ steps.autoversion.outputs.new_tag }} , ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-dev:latest
+
+    - name: Push dev image from qa branch
+      id: push-dev-image-qa-branch
+      if: github.ref_name == 'qa'
+      uses: docker/build-push-action@v3
+      with:
+        context: ../
+        file: ./docker/Dockerfile
+        platforms: linux/amd64, linux/arm64
+        push: true
+        target: dev_stage
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-dev:${{ steps.autoversion.outputs.new_tag }}
+
+    - name: Push prod image from qa/main branch
+      id: push-prod-image
+      if: github.ref_name == 'qa' || github.ref_name == 'main'
+      uses: docker/build-push-action@v3
+      with:
+        context: ../
+        file: ./docker/Dockerfile
+        platforms: linux/amd64, linux/arm64
+        push: true
+        target: prod_stage
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ steps.autoversion.outputs.new_tag }}
+
+    - name: Bump version and push tag
+      if: (steps.push-dev-image-dev-branch.outcome == 'success' || steps.push-dev-image-dev-branch.outcome == 'skipped') &&
+          (steps.push-dev-image-qa-branch.outcome == 'success' || steps.push-dev-image-qa-branch.outcome == 'skipped') &&
+          (steps.push-prod-image.outcome == 'success' || steps.push-prod-image.outcome == 'skipped')
+      uses: anothrNick/github-tag-action@1.39.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.PAT }}
+        INITIAL_VERSION: 1.0.0
+        WITH_V: true
+        DEFAULT_BUMP: ${{ env.BUMP }}
+        RELEASE_BRANCHES: dev,qa,main
