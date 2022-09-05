@@ -1,0 +1,64 @@
+name: Rebuild Platform Docker from Dependency
+
+on:
+  workflow_call:
+    inputs:
+      repository:
+        description: 'Repository to build from'
+        required: true
+        type: string
+      arch:
+        description: 'Architecture to build'
+        required: true
+        type: string
+      stage:
+        description: 'Stage to build'
+        required: true
+        type: string
+    secrets:
+      PAT: 
+        required: true
+      DOCKERHUB_USERNAME:
+        required: true
+      DOCKERHUB_TOKEN:
+        required: true
+jobs:
+  rebuild_docker:
+    runs-on: self-hosted
+    steps:
+    - name: Check Out Repo 
+      uses: actions/checkout@v3
+      id: checkout_repo
+      with:
+        repository: umdlife/${{ inputs.repository }}
+        ref: ${{ github.head_ref }}
+        token: ${{ secrets.PAT }}
+        submodules: recursive
+        path: ${{ inputs.repository }}
+      continue-on-error: true
+    - name: Check Out dev Repo
+      if: steps.checkout_repo.outcome == 'failure'
+      uses: actions/checkout@v3
+      with:
+        repository: umdlife/${{ inputs.repository }}
+        ref: dev
+        token: ${{ secrets.PAT }}
+        submodules: recursive
+        path: ${{ inputs.repository }}
+
+    - name: Checkout Branch Recursive Submodules
+      shell: bash
+      run: |
+        cd ${{ inputs.repository }}
+        git submodule foreach --recursive "git checkout ${{ github.head_ref }} || :"
+
+    - name: Build Docker Image
+      uses: umdlife/umd_workflows/docker-build-push-action@main
+      with:
+        context: ./
+        dockerfile: ./${{ inputs.repository }}/docker/Dockerfile
+        arch: ${{ inputs.arch }}
+        stage: ${{ inputs.stage }}
+        push: false
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        token: ${{ secrets.DOCKERHUB_TOKEN }}
