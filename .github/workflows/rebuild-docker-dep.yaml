@@ -26,8 +26,6 @@ on:
 jobs:
   rebuild_docker:
     runs-on: self-hosted
-    env:
-      GH_TOKEN: ${{ secrets.PAT }}
     steps:
     - name: Check Out Repo 
       uses: actions/checkout@v3
@@ -53,7 +51,7 @@ jobs:
       shell: bash
       run: |
         cd ${{ inputs.repository }}
-        git submodule foreach --recursive "gh pr checkout ${{ github.head_ref }} || :"
+        git submodule foreach --recursive "gh pr checkout main || :"
 
     - name: Build Docker Image
       uses: umdlife/umd_workflows/docker-build-push-action@main
