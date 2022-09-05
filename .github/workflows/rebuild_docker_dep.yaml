@@ -55,19 +55,13 @@ jobs:
         cd ${{ inputs.repository }}
         git submodule foreach --recursive "git checkout ${{ github.head_ref }} || :"
 
-    - name: Setup Docker
-      uses: umdlife/umd_workflows/setup-docker-env-action@main
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        token: ${{ secrets.DOCKERHUB_TOKEN }}
-
-    - name: Build and push
-      id: docker_build
-      uses: docker/build-push-action@v3
+    - name: Build Docker Image
+      uses: umdlife/umd_workflows/docker_build_push_action@main
       with:
         context: ./
-        no-cache: true
-        file: ./${{ inputs.repository }}/docker/Dockerfile
-        platforms: ${{ inputs.arch }}
-        target: ${{ inputs.stage }}
+        dockerfile: ./${{ inputs.repository }}/docker/Dockerfile
+        arch: ${{ inputs.arch }}
+        stage: ${{ inputs.stage }}
         push: false
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        token: ${{ secrets.DOCKERHUB_TOKEN }}
