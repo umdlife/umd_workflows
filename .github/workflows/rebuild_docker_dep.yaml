@@ -66,6 +66,7 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         context: ./
+        no-cache: true
         file: ./${{ inputs.repository }}/docker/Dockerfile
         platforms: ${{ inputs.arch }}
         target: ${{ inputs.stage }}
