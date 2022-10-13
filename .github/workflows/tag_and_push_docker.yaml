@@ -63,7 +63,7 @@ jobs:
       with:
         context: ../
         file: ./docker/Dockerfile
-        platforms: linux/amd64, linux/arm64
+        platforms: linux/amd64
         push: true
         target: dev_stage
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-dev:${{ steps.autoversion.outputs.new_tag }} , ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-dev:latest
@@ -75,7 +75,7 @@ jobs:
       with:
         context: ../
         file: ./docker/Dockerfile
-        platforms: linux/amd64, linux/arm64
+        platforms: linux/amd64
         push: true
         target: dev_stage
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-dev:${{ steps.autoversion.outputs.new_tag }}
@@ -87,7 +87,7 @@ jobs:
       with:
         context: ../
         file: ./docker/Dockerfile
-        platforms: linux/amd64, linux/arm64
+        platforms: linux/amd64
         push: true
         target: prod_stage
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ steps.autoversion.outputs.new_tag }}
