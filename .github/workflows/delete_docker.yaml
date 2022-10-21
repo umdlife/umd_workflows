@@ -8,7 +8,7 @@ on:
       DOCKERHUB_TOKEN:
         required: true
 jobs:
-  rebuild_docker:
+  delete_docker:
     runs-on: self-hosted
     steps:
     - name: Get Repo name
