@@ -3,8 +3,6 @@ name: Delete Temporal Docker Image in Dockerhub
 on:
   workflow_call:
     secrets:
-      PAT: 
-        required: true
       DOCKERHUB_USERNAME:
         required: true
       DOCKERHUB_TOKEN:
