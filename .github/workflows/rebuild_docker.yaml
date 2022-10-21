@@ -49,7 +49,7 @@ jobs:
     - name: Get Branch name
       shell: bash
       run: |
-        BRANCH_NAME=${{ github.event.head_ref }}
+        BRANCH_NAME=${{ github.head_ref }}
         BRANCH_NAME="${BRANCH_NAME//\//-}"
         echo "BRANCH_NAME=${BRANCH_NAME}" >> $GITHUB_ENV
         echo "$BRANCH_NAME"
