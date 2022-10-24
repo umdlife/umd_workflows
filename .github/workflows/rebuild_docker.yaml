@@ -54,6 +54,21 @@ jobs:
         echo "BRANCH_NAME=${BRANCH_NAME}" >> $GITHUB_ENV
         echo "$BRANCH_NAME"
 
+    - name: Decide if we should push to DockerHub
+      shell: bash
+      run: |
+        if [[ ${{ inputs.push }} == "true" && 
+              ${{ github.head_ref }} != "main" && 
+              ${{ github.head_ref }} != "qa" && 
+              ${{ github.head_ref }} != "dev" &&
+              ${{ github.head_ref }} =~ UP-[0-9]+]];
+        then
+          echo "PUSH_TO_DOCKERHUB=true" >> $GITHUB_ENV
+        else
+          echo "PUSH_TO_DOCKERHUB=false" >> $GITHUB_ENV
+        fi
+        echo "$PUSH_TO_DOCKERHUB"
+
     - name: Setup Docker
       uses: umdlife/umd_workflows/setup-docker-env-action@main
       with:
@@ -69,5 +84,5 @@ jobs:
         file: ./docker/Dockerfile
         platforms: ${{ inputs.arch }}
         target: ${{ inputs.stage }}
-        push: ${{ inputs.push }}
+        push: ${{ env.PUSH_TO_DOCKERHUB }}
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.BRANCH_NAME }}
