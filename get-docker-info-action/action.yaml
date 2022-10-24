@@ -11,12 +11,12 @@ outputs:
   image_name:
     description: 'Docker image name'
     value: ${{ steps.get_image_name.outputs.IMAGE_NAME }}
-  # tag_name:
-  #   description: 'Docker tag name'
-  #   value: ${{ steps.get_tag_name.outputs.TAG_NAME }}
-  # push:
-  #   description: 'Push to DockerHub'
-  #   value: ${{ steps.push_to_dockerhub.outputs.PUSH_TO_DOCKERHUB }}
+  tag_name:
+    description: 'Docker tag name'
+    value: ${{ steps.get_tag_name.outputs.TAG_NAME }}
+  push:
+    description: 'Push to DockerHub'
+    value: ${{ steps.push_to_dockerhub.outputs.PUSH_TO_DOCKERHUB }}
 runs:
   using: "composite"
   steps:
