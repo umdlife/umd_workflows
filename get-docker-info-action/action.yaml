@@ -30,27 +30,27 @@ runs:
         then
           IMAGE_NAME+=-dev
         fi
-        echo "${IMAGE_NAME}" >> $GITHUB_OUTPUT
+        echo "IMAGE_NAME=${IMAGE_NAME}" >> $GITHUB_OUTPUT
 
-    # - name: Get Tag name
-    #   id: get_tag_name
-    #   shell: bash
-    #   run: |
-    #     TAG_NAME=${{ github.head_ref }}
-    #     TAG_NAME="${TAG_NAME//\//-}"
-    #     echo "${TAG_NAME}" >> $GITHUB_OUTPUT
+    - name: Get Tag name
+      id: get_tag_name
+      shell: bash
+      run: |
+        TAG_NAME=${{ github.head_ref }}
+        TAG_NAME="${TAG_NAME//\//-}"
+        echo "TAG_NAME=${TAG_NAME}" >> $GITHUB_OUTPUT
 
-    # - name: Decide if we should push to DockerHub
-    #   id: push_to_dockerhub
-    #   shell: bash
-    #   run: |
-    #     if [[ ${{ inputs.push }} == "true" && 
-    #           ${{ github.head_ref }} != "main" && 
-    #           ${{ github.head_ref }} != "qa" && 
-    #           ${{ github.head_ref }} != "dev" &&
-    #           ${{ github.head_ref }} =~ UP-[0-9]+ ]];
-    #     then
-    #       echo "PUSH_TO_DOCKERHUB=true" >> $GITHUB_OUTPUT
-    #     else
-    #       echo "PUSH_TO_DOCKERHUB=false" >> $GITHUB_OUTPUT
-    #     fi
+    - name: Decide if we should push to DockerHub
+      id: push_to_dockerhub
+      shell: bash
+      run: |
+        if [[ ${{ inputs.push }} == "true" && 
+              ${{ github.head_ref }} != "main" && 
+              ${{ github.head_ref }} != "qa" && 
+              ${{ github.head_ref }} != "dev" &&
+              ${{ github.head_ref }} =~ UP-[0-9]+ ]];
+        then
+          echo "PUSH_TO_DOCKERHUB=true" >> $GITHUB_OUTPUT
+        else
+          echo "PUSH_TO_DOCKERHUB=false" >> $GITHUB_OUTPUT
+        fi
