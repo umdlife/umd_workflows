@@ -16,7 +16,7 @@ outputs:
     value: ${{ steps.get_tag_name.outputs.TAG_NAME }}
   push:
     description: 'Push to DockerHub'
-    value: ${{ steps.push_to_dockerhub.outputs.PUSH }}
+    value: ${{ steps.push_to_dockerhub.outputs.PUSH_TO_DOCKERHUB }}
 runs:
   using: "composite"
   steps:
