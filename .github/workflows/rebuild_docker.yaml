@@ -34,40 +34,12 @@ jobs:
         token: ${{ secrets.PAT }}
         ref: ${{ github.head_ref }}
 
-    - name: Get Repo name
-      shell: bash
-      run: |
-        IMAGE_NAME=${{ github.event.repository.name }}
-        IMAGE_NAME="${IMAGE_NAME//_/-}"
-        if [[ ${{ inputs.stage }} == "dev_stage" ]]; 
-        then
-          IMAGE_NAME+=-dev
-        fi
-        echo "IMAGE_NAME=${IMAGE_NAME}" >> $GITHUB_ENV
-        echo "$IMAGE_NAME"
-
-    - name: Get Branch name
-      shell: bash
-      run: |
-        BRANCH_NAME=${{ github.head_ref }}
-        BRANCH_NAME="${BRANCH_NAME//\//-}"
-        echo "BRANCH_NAME=${BRANCH_NAME}" >> $GITHUB_ENV
-        echo "$BRANCH_NAME"
-
-    - name: Decide if we should push to DockerHub
-      shell: bash
-      run: |
-        if [[ ${{ inputs.push }} == "true" && 
-              ${{ github.head_ref }} != "main" && 
-              ${{ github.head_ref }} != "qa" && 
-              ${{ github.head_ref }} != "dev" &&
-              ${{ github.head_ref }} =~ UP-[0-9]+ ]];
-        then
-          echo "PUSH_TO_DOCKERHUB=true" >> $GITHUB_ENV
-        else
-          echo "PUSH_TO_DOCKERHUB=false" >> $GITHUB_ENV
-        fi
-        echo "$PUSH_TO_DOCKERHUB"
+    - name: Get Docker Info
+      id: get_docker_info
+      uses: umdlife/umd_workflows/get-docker-info-action@feat/push-on-pr
+      with:
+        stage: ${{ inputs.stage }}
+        push: ${{ inputs.push }}
 
     - name: Setup Docker
       uses: umdlife/umd_workflows/setup-docker-env-action@main
@@ -84,5 +56,5 @@ jobs:
         file: ./docker/Dockerfile
         platforms: ${{ inputs.arch }}
         target: ${{ inputs.stage }}
-        push: ${{ env.PUSH_TO_DOCKERHUB }}
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.BRANCH_NAME }}
+        push: ${{ steps.get_docker_info.outputs.push }}
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.get_docker_info.outputs.image_name }}:${{ steps.get_docker_info.outputs.tag_name }}
