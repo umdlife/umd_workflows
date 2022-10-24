@@ -27,7 +27,6 @@ jobs:
         if [[ ${BRANCH_NAME} == "dev" || ${BRANCH_NAME} == "qa" || ${BRANCH_NAME} == "main" ]]; 
         then
           BRANCH_NAME="stop-doing-this"
-          exit 1
         fi
         echo "BRANCH_NAME=${BRANCH_NAME}" >> $GITHUB_ENV
         echo "$BRANCH_NAME"
