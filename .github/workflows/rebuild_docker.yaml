@@ -34,27 +34,14 @@ jobs:
         token: ${{ secrets.PAT }}
         ref: ${{ github.head_ref }}
 
-    - name: Get Docker Info
-      id: get_docker_info
-      uses: umdlife/umd_workflows/get-docker-info-action@feat/push-on-pr
+    - name: Build and push
+      uses: umdlife/umd_workflows/push-pr-docker-action@feat/push-on-pr
       with:
+        repository: ${{ github.event.repository.name }}
+        context: ../
+        file: ./docker/Dockerfile
+        arch: ${{ inputs.arch }}
         stage: ${{ inputs.stage }}
         push: ${{ inputs.push }}
-
-    - name: Setup Docker
-      uses: umdlife/umd_workflows/setup-docker-env-action@main
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        token: ${{ secrets.DOCKERHUB_TOKEN }}
-
-    - name: Build and push
-      id: docker_build
-      uses: docker/build-push-action@v3
-      with:
-        context: ../
-        no-cache: true
-        file: ./docker/Dockerfile
-        platforms: ${{ inputs.arch }}
-        target: ${{ inputs.stage }}
-        push: ${{ steps.get_docker_info.outputs.push }}
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.get_docker_info.outputs.image_name }}:${{ steps.get_docker_info.outputs.tag_name }}
+        dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
+        dockerhub_token: ${{ secrets.DOCKERHUB_TOKEN }}

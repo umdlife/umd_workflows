@@ -15,6 +15,11 @@ on:
         description: 'Stage to build'
         required: true
         type: string
+      push:
+        description: 'Push to DockerHub'
+        required: false
+        type: boolean
+        default: false
     secrets:
       PAT: 
         required: true
@@ -55,18 +60,14 @@ jobs:
         cd ${{ inputs.repository }}
         git submodule foreach --recursive "git checkout ${{ github.head_ref }} || :"
 
-    - name: Setup Docker
-      uses: umdlife/umd_workflows/setup-docker-env-action@main
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        token: ${{ secrets.DOCKERHUB_TOKEN }}
-
     - name: Build and push
-      id: docker_build
-      uses: docker/build-push-action@v3
+      uses: umdlife/umd_workflows/push-pr-docker-action@feat/push-on-pr
       with:
+        repository: ${{ inputs.repository }}
         context: ./
         file: ./${{ inputs.repository }}/docker/Dockerfile
-        platforms: ${{ inputs.arch }}
-        target: ${{ inputs.stage }}
-        push: false
+        arch: ${{ inputs.arch }}
+        stage: ${{ inputs.stage }}
+        push: ${{ inputs.push }}
+        dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
+        dockerhub_token: ${{ secrets.DOCKERHUB_TOKEN }}
