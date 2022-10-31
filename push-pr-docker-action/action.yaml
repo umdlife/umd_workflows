@@ -30,7 +30,7 @@ runs:
   steps:
     - name: Get Image name
       id: get_docker_info
-      uses: umdlife/umd_workflows/get-docker-info-from-pr@feat/push-on-pr
+      uses: umdlife/umd_workflows/get-docker-info-from-pr@main
       with:
         repository: ${{ inputs.repository }}
         stage: ${{ inputs.stage }}
