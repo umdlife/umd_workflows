@@ -2,6 +2,11 @@ name: Delete Temporal Docker Image in Dockerhub
 
 on:
   workflow_call:
+    inputs:
+      repository:
+        description: 'Repository to build from'
+        required: true
+        type: string
     secrets:
       DOCKERHUB_USERNAME:
         required: true
@@ -15,7 +20,7 @@ jobs:
       id: get_docker_info
       uses: umdlife/umd_workflows/get-docker-info-from-pr@feat/push-on-pr
       with:
-        repository: ${{ github.event.repository.name }}
+        repository: ${{ inputs.repository }}
         stage: prod_stage
         push: true
 
