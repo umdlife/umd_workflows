@@ -29,39 +29,12 @@ runs:
   using: "composite"
   steps:
     - name: Get Image name
-      id: get_image_name
-      shell: bash
-      run: |
-        IMAGE_NAME=${{ inputs.repository }}
-        IMAGE_NAME="${IMAGE_NAME//_/-}"
-        if [[ ${{ inputs.stage }} == "dev_stage" ]]; 
-        then
-          IMAGE_NAME+=-dev
-        fi
-        echo "IMAGE_NAME=${IMAGE_NAME}" >> $GITHUB_OUTPUT
-
-    - name: Get Tag name
-      id: get_tag_name
-      shell: bash
-      run: |
-        TAG_NAME=${{ github.head_ref }}
-        TAG_NAME="${TAG_NAME//\//-}"
-        echo "TAG_NAME=${TAG_NAME}" >> $GITHUB_OUTPUT
-
-    - name: Decide if we should push to DockerHub
-      id: push_to_dockerhub
-      shell: bash
-      run: |
-        if [[ ${{ inputs.push }} == "true" && 
-              ${{ github.head_ref }} != "main" && 
-              ${{ github.head_ref }} != "qa" && 
-              ${{ github.head_ref }} != "dev" &&
-              ${{ github.head_ref }} =~ UP-[0-9]+ ]];
-        then
-          echo "PUSH_TO_DOCKERHUB=true" >> $GITHUB_OUTPUT
-        else
-          echo "PUSH_TO_DOCKERHUB=false" >> $GITHUB_OUTPUT
-        fi
+      id: get_docker_info
+      uses: umdlife/umd_workflows/get-docker-info-from-pr@feat/push-on-pr
+      with:
+        repository: ${{ inputs.repository }}
+        stage: ${{ inputs.stage }}
+        push: ${{ inputs.push }}
     
     - name: Setup Docker
       uses: umdlife/umd_workflows/setup-docker-env-action@main
@@ -76,5 +49,5 @@ runs:
         file: ${{ inputs.file }}
         platforms: ${{ inputs.arch }}
         target: ${{ inputs.stage }}
-        push: ${{ steps.push_to_dockerhub.outputs.PUSH_TO_DOCKERHUB }}
-        tags: ${{ inputs.dockerhub_username }}/${{ steps.get_image_name.outputs.IMAGE_NAME }}:${{ steps.get_tag_name.outputs.TAG_NAME }}
+        push: ${{ steps.get_docker_info.outputs.push }}
+        tags: ${{ inputs.dockerhub_username }}/${{ steps.get_docker_info.outputs.image_name }}:${{ steps.get_docker_info.outputs.tag_name }}
