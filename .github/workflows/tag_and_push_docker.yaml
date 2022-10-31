@@ -50,7 +50,7 @@ jobs:
         DEFAULT_BUMP: ${{ env.BUMP }}
         RELEASE_BRANCHES: dev,qa,main
 
-    - name: Build Docker Image
+    - name: Setup Docker
       uses: umdlife/umd_workflows/setup-docker-env-action@main
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}

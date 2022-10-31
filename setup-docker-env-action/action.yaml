@@ -1,5 +1,5 @@
-name: 'Docker Build and Push'
-description: 'Docker Login, Build, and Push'
+name: 'Docker Setup and Login'
+description: 'Docker Login, Build'
 inputs:
     username:
       description: 'DockerHub username'

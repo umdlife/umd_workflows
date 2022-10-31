@@ -1,0 +1,33 @@
+name: Delete Temporal Docker Image in Dockerhub
+
+on:
+  workflow_call:
+    inputs:
+      repository:
+        description: 'Repository to build from'
+        required: true
+        type: string
+    secrets:
+      DOCKERHUB_USERNAME:
+        required: true
+      DOCKERHUB_TOKEN:
+        required: true
+jobs:
+  delete_docker:
+    runs-on: self-hosted
+    steps:
+    - name: Get Image name
+      id: get_docker_info
+      uses: umdlife/umd_workflows/get-docker-info-from-pr@main
+      with:
+        repository: ${{ inputs.repository }}
+        stage: prod_stage
+        push: true
+
+    - name: Delete Docker Image
+      if: steps.get_docker_info.outputs.push == 'true'
+      shell: bash
+      run: |
+        TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d '{"username": "'${{ secrets.DOCKERHUB_USERNAME }}'", "password": "'${{ secrets.DOCKERHUB_TOKEN }}'"}' https://hub.docker.com/v2/users/login/ | jq -r .token)
+        curl -s  -X DELETE  -H "Authorization: JWT ${TOKEN}" https://hub.docker.com/v2/repositories/${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.get_docker_info.outputs.image_name }}-dev/tags/${{ steps.get_docker_info.outputs.tag_name }}/
+        curl -s  -X DELETE  -H "Authorization: JWT ${TOKEN}" https://hub.docker.com/v2/repositories/${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.get_docker_info.outputs.image_name }}/tags/${{ steps.get_docker_info.outputs.tag_name }}/

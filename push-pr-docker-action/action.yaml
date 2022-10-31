@@ -1,0 +1,53 @@
+name: 'Push PR Docker Image'
+description: 'Get docker image name, tag and push it to DockerHub'
+inputs:
+  repository:
+    description: 'Repository name'
+    required: true
+  context:
+    description: 'Context to build'
+    required: true
+  file:
+    description: 'Dockerfile to build'
+    required: true
+  arch:
+    description: 'Architecture to build'
+    required: true
+  stage:
+    description: 'Docker stage to build'
+    required: true
+  push:
+    description: 'Push to DockerHub'
+    required: true
+  dockerhub_username:
+    description: 'DockerHub username'
+    required: true
+  dockerhub_token:
+    description: 'DockerHub token'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Get Image name
+      id: get_docker_info
+      uses: umdlife/umd_workflows/get-docker-info-from-pr@main
+      with:
+        repository: ${{ inputs.repository }}
+        stage: ${{ inputs.stage }}
+        push: ${{ inputs.push }}
+    
+    - name: Setup Docker
+      uses: umdlife/umd_workflows/setup-docker-env-action@main
+      with:
+        username: ${{ inputs.dockerhub_username }}
+        token: ${{ inputs.dockerhub_token }}
+
+    - name: Build and Push image
+      uses: docker/build-push-action@v3
+      with:
+        context: ${{ inputs.context }}
+        file: ${{ inputs.file }}
+        platforms: ${{ inputs.arch }}
+        target: ${{ inputs.stage }}
+        push: ${{ steps.get_docker_info.outputs.push }}
+        tags: ${{ inputs.dockerhub_username }}/${{ steps.get_docker_info.outputs.image_name }}:${{ steps.get_docker_info.outputs.tag_name }}
