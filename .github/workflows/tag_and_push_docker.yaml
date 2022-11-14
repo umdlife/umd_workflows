@@ -93,9 +93,6 @@ jobs:
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ steps.autoversion.outputs.new_tag }}
 
     - name: Bump version and push tag
-      if: (steps.push-dev-image-dev-branch.outcome == 'success' || steps.push-dev-image-dev-branch.outcome == 'skipped') &&
-          (steps.push-dev-image-qa-branch.outcome == 'success' || steps.push-dev-image-qa-branch.outcome == 'skipped') &&
-          (steps.push-prod-image.outcome == 'success' || steps.push-prod-image.outcome == 'skipped')
       uses: anothrNick/github-tag-action@1.39.0
       env:
         GITHUB_TOKEN: ${{ secrets.PAT }}
@@ -103,3 +100,12 @@ jobs:
         WITH_V: true
         DEFAULT_BUMP: ${{ env.BUMP }}
         RELEASE_BRANCHES: dev,qa,main
+
+    - name: AutoRelease
+      uses: softprops/action-gh-release@v0.1.14
+      if: github.ref_name == 'main' || github.ref_name == 'qa'
+      with:
+        token: ${{ secrets.PAT }}
+        prerelease: ${{ github.ref_name == 'qa' }}
+        tag_name: ${{ steps.autoversion.outputs.new_tag }}
+        generate_release_notes: true
