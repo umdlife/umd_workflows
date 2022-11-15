@@ -6,7 +6,7 @@ on:
       PAT: 
         required: true
 jobs:
-  delete_docker:
+  label_pr:
     runs-on: self-hosted
     steps:
     - name: Check Out Workflows Repo 
