@@ -1,3 +1,0 @@
-feature: feat/*
-bug: hotfix/*
-maintenance: ['dev', 'qa', 'main']

@@ -1,5 +1,4 @@
-name: Label PR with branch name
-
+name: Label PR
 on:
   workflow_call:
     secrets:
@@ -9,16 +8,8 @@ jobs:
   label_pr:
     runs-on: self-hosted
     steps:
-    - name: Check Out Workflows Repo 
-      uses: actions/checkout@v3
-      id: checkout_repo
-      with:
-        repository: umdlife/umd_workflows
-        ref: feat/auto-release
-        token: ${{ secrets.PAT }}
-        path: umd_workflows
     - name: PR Labeler
-      uses: TimonVS/pr-labeler-action@v3.1.0
+      uses: umdlife/umd_workflows/pr-labeler-action@feat/auto-release
       with:
           configuration-path: umd_workflows/.github/pr-labeler.yml
       env:

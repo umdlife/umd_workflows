@@ -9,5 +9,5 @@ branding:
   icon: 'tag'
   color: 'white'
 runs:
-  using: 'node16'
+  using: 'node12'
   main: 'index.js'
