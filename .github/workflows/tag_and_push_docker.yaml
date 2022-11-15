@@ -117,3 +117,5 @@ jobs:
         tag: ${{ steps.autoversion.outputs.new_tag }}
         publish: true
         prerelease: ${{ github.ref_name == 'qa' }}
+      env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
