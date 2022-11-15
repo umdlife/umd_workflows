@@ -101,11 +101,20 @@ jobs:
         DEFAULT_BUMP: ${{ env.BUMP }}
         RELEASE_BRANCHES: dev,qa,main
 
-    - name: AutoRelease
-      uses: softprops/action-gh-release@v0.1.14
-      if: github.ref_name == 'main' || github.ref_name == 'qa'
+    # - name: AutoRelease
+    #   uses: softprops/action-gh-release@v0.1.14
+    #   if: github.ref_name == 'main' || github.ref_name == 'qa'
+    #   with:
+    #     token: ${{ secrets.PAT }}
+    #     prerelease: ${{ github.ref_name == 'qa' }}
+    #     tag_name: ${{ steps.autoversion.outputs.new_tag }}
+    #     generate_release_notes: true
+
+    - name: Release Drafter
+      uses: release-drafter/release-drafter@v5.21.1
       with:
         token: ${{ secrets.PAT }}
+        name: ${{ steps.autoversion.outputs.new_tag }}
+        tag: ${{ steps.autoversion.outputs.new_tag }}
+        publish: true
         prerelease: ${{ github.ref_name == 'qa' }}
-        tag_name: ${{ steps.autoversion.outputs.new_tag }}
-        generate_release_notes: true
