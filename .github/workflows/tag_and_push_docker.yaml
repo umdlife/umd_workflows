@@ -101,17 +101,8 @@ jobs:
         DEFAULT_BUMP: ${{ env.BUMP }}
         RELEASE_BRANCHES: dev,qa,main
 
-    # - name: AutoRelease
-    #   uses: softprops/action-gh-release@v0.1.14
-    #   if: github.ref_name == 'main' || github.ref_name == 'qa'
-    #   with:
-    #     token: ${{ secrets.PAT }}
-    #     prerelease: ${{ github.ref_name == 'qa' }}
-    #     tag_name: ${{ steps.autoversion.outputs.new_tag }}
-    #     generate_release_notes: true
-
     - name: Release Drafter
-      uses: umdlife/umd_workflows/release-drafter-action@feat/auto-release
+      uses: umdlife/umd_workflows/release-drafter-action@main
       if: github.ref_name == 'main' || github.ref_name == 'qa'
       with:
         name: ${{ steps.autoversion.outputs.new_tag }}
