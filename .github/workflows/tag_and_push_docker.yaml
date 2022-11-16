@@ -111,7 +111,7 @@ jobs:
     #     generate_release_notes: true
 
     - name: Release Drafter
-      uses: release-drafter/release-drafter@v5.21.1
+      uses: umdlife/umd_workflows/release-drafter-action@feat/auto-release
       if: github.ref_name == 'main' || github.ref_name == 'qa'
       with:
         name: ${{ steps.autoversion.outputs.new_tag }}
