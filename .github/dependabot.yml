@@ -4,15 +4,6 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-    target-branch: "dev"
-    commit-message:
-      prefix: "🛠️"
-  - package-ecosystem: "gitsubmodule"
-    directory: "/"
-    schedule:
-      interval: "daily"
-      timezone: "Europe/Madrid"
-      time: "00:00"
-    target-branch: "dev"
+    target-branch: "main"
     commit-message:
       prefix: "🛠️"
