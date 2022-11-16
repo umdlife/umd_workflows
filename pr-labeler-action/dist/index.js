@@ -15173,7 +15173,7 @@ const github = __importStar(__webpack_require__(469));
 const matcher_1 = __importDefault(__webpack_require__(167));
 const config_1 = __importDefault(__webpack_require__(619));
 const defaultConfig = {
-    feature: 'feat/*',
+    enhancement: 'feat/*',
     bug: 'hotfix/*',
     maintenance: ['dev', 'qa', 'main']
 };
