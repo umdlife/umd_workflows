@@ -1,0 +1,16 @@
+name: Label PR
+on:
+  workflow_call:
+    secrets:
+      PAT: 
+        required: true
+jobs:
+  label_pr:
+    runs-on: self-hosted
+    steps:
+    - name: PR Labeler
+      uses: umdlife/umd_workflows/pr-labeler-action@main
+      with:
+          configuration-path: umd_workflows/.github/pr-labeler.yml
+      env:
+        GITHUB_TOKEN: ${{ secrets.PAT }}
