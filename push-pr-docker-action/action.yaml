@@ -25,6 +25,10 @@ inputs:
   dockerhub_token:
     description: 'DockerHub token'
     required: true
+  build_args:
+    description: 'Build arguments'
+    required: false
+    default: ''
 runs:
   using: "composite"
   steps:
@@ -49,5 +53,6 @@ runs:
         file: ${{ inputs.file }}
         platforms: ${{ inputs.arch }}
         target: ${{ inputs.stage }}
+        build-args: ${{ inputs.build_args }}
         push: ${{ steps.get_docker_info.outputs.push }}
         tags: ${{ inputs.dockerhub_username }}/${{ steps.get_docker_info.outputs.image_name }}:${{ steps.get_docker_info.outputs.tag_name }}

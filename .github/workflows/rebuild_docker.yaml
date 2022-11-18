@@ -16,6 +16,11 @@ on:
         required: false
         type: boolean
         default: false
+      build_args:
+        description: 'Build arguments'
+        required: false
+        type: string
+        default: ''
     secrets:
       PAT: 
         required: true
@@ -43,5 +48,6 @@ jobs:
         arch: ${{ inputs.arch }}
         stage: ${{ inputs.stage }}
         push: ${{ inputs.push }}
+        build_args: ${{ inputs.build_args }}
         dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
         dockerhub_token: ${{ secrets.DOCKERHUB_TOKEN }}
