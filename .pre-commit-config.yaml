@@ -16,3 +16,8 @@ repos:
     - id: cppcheck
     - id: cpplint
     - id: clang-tidy
+  - repo: https://github.com/AleksaC/hadolint-py
+    rev: v2.10.0
+    hooks:
+      - id: hadolint
+        # args: [--ignore, DL3025, --ignore, DL3018]
