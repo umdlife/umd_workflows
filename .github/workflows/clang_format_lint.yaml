@@ -3,7 +3,7 @@ name: Run clang-format Linter
 on:
   workflow_call:
 jobs:
-  cpp-check:
+  clang-format-lint:
     runs-on: self-hosted
     steps:
     - uses: actions/checkout@v3
@@ -38,6 +38,7 @@ jobs:
         env:
           DEFAULT_BRANCH: ${{ github.base_ref }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SSH_KEY: ${{ secrets.DOCKERHUB_TOKEN }}
           VALIDATE_CPP: true
           VALIDATE_CLANG_FORMAT: true
           VALIDATE_DOCKERFILE_HADOLINT: true
