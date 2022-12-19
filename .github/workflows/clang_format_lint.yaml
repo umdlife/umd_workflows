@@ -3,7 +3,8 @@ name: Run clang-format Linter
 on:
   workflow_call:
 jobs:
-  cpp-check:
+  clang-format-lint:
+    name: Code Formatting
     runs-on: self-hosted
     steps:
     - uses: actions/checkout@v3
@@ -23,3 +24,25 @@ jobs:
         author_name: UMLDev Clang Robot
         author_email: dev@unmanned.life
         message: 'Committing clang-format changes'
+        
+  super-linter:
+    needs: clang-format-lint
+    name: Lint Code Base
+    runs-on: self-hosted
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Super Linter
+        uses: github/super-linter/slim@v4
+        env:
+          DEFAULT_BRANCH: ${{ github.base_ref }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_ALL_CODEBASE: false
+          VALIDATE_CPP: true
+          VALIDATE_PYTHON_BLACK: true
+          VALIDATE_PYTHON_FLAKE8: true
+          VALIDATE_XML: true
+          VALIDATE_YAML: true
