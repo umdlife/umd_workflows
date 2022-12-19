@@ -25,11 +25,11 @@ jobs:
         author_email: dev@unmanned.life
         message: 'Committing clang-format changes'
 
-    - uses: actions/checkout@v3
-      with:
-        repository: umdlife/umd_workflows
-        path: umd_workflows
-        ref: feat/cppcheck
+    # - uses: actions/checkout@v3
+    #   with:
+    #     repository: umdlife/umd_workflows
+    #     path: umd_workflows
+    #     ref: feat/cppcheck
     
     # - name: Exctract pre-commit config file
     #   run: |
@@ -48,7 +48,7 @@ jobs:
     # - run: pre-commit run --show-diff-on-failure --color=always --config ../.pre-commit-config.yaml --from-ref origin/${{ github.base_ref }} --to-ref origin/${{ github.head_ref }}
     #   shell: bash
     - name: Super Linter
-      uses: github/super-linter@v4
+      uses: github/super-linter@slim-v4
       env:
         DEFAULT_BRANCH: ${{ github.base_ref }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
