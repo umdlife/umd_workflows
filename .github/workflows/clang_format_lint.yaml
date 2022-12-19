@@ -28,6 +28,7 @@ jobs:
       with:
         repository: umdlife/umd_workflows
         path: umd_workflows
+        ref: feat/cppcheck
     
     - name: Exctract pre-commit config file
       run: |
