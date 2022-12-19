@@ -31,19 +31,27 @@ jobs:
         path: umd_workflows
         ref: feat/cppcheck
     
-    - name: Exctract pre-commit config file
-      run: |
-        cp umd_workflows/.pre-commit-config.yaml ../.pre-commit-config.yaml &&
-        rm -rf umd_workflows
+    # - name: Exctract pre-commit config file
+    #   run: |
+    #     cp umd_workflows/.pre-commit-config.yaml ../.pre-commit-config.yaml &&
+    #     rm -rf umd_workflows
 
-    - name: Run pre-commit
-      run: |   
-        sudo apt update && sudo apt install -y cppcheck clang-tidy
-      shell: bash
-    - run: python -m pip install pre-commit cpplint
-      shell: bash
-    - run: python -m pip freeze --local
-      shell: bash
+    # - name: Run pre-commit
+    #   run: |   
+    #     sudo apt update && sudo apt install -y cppcheck clang-tidy
+    #   shell: bash
+    # - run: python -m pip install pre-commit cpplint
+    #   shell: bash
+    # - run: python -m pip freeze --local
+    #   shell: bash
     
-    - run: pre-commit run --show-diff-on-failure --color=always --config ../.pre-commit-config.yaml --from-ref origin/${{ github.base_ref }} --to-ref origin/${{ github.head_ref }}
-      shell: bash
+    # - run: pre-commit run --show-diff-on-failure --color=always --config ../.pre-commit-config.yaml --from-ref origin/${{ github.base_ref }} --to-ref origin/${{ github.head_ref }}
+    #   shell: bash
+    - name: Super Linter
+      uses: github/super-linter@v4
+      env:
+        DEFAULT_BRANCH: ${{ github.base_ref }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        VALIDATE_CPP: true
+        VALIDATE_XML: true
+        VALIDATE_YAML: true
