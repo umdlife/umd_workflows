@@ -36,6 +36,12 @@ jobs:
         cp umd_workflows/.pre-commit-config.yaml ../.pre-commit-config.yaml &&
         rm -rf umd_workflows
 
-    - uses: pre-commit/action@v3.0.0
-      with:
-        extra_args: --config ../.pre-commit-config.yaml --all-files
+    - run: python -m pip install pre-commit cpplint
+      shell: bash
+    - run: python -m pip freeze --local
+      shell: bash
+    - name: Run pre-commit
+      run: |   
+        sudo apt install -y cppcheck
+    - run: pre-commit run --show-diff-on-failure --color=always --config ../.pre-commit-config.yaml --from-ref ${{ github.base_ref }} --to-ref ${{ github.head_ref }}
+      shell: bash
