@@ -41,7 +41,6 @@ jobs:
           DEFAULT_BRANCH: ${{ github.base_ref }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VALIDATE_CPP: true
-          VALIDATE_CLANG_FORMAT: true
           VALIDATE_DOCKERFILE_HADOLINT: true
           VALIDATE_PYTHON_BLACK: true
           VALIDATE_PYTHON_FLAKE8: true
