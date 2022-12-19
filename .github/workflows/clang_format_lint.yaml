@@ -25,33 +25,11 @@ jobs:
         author_email: dev@unmanned.life
         message: 'Committing clang-format changes'
 
-    # - uses: actions/checkout@v3
-    #   with:
-    #     repository: umdlife/umd_workflows
-    #     path: umd_workflows
-    #     ref: feat/cppcheck
-    
-    # - name: Exctract pre-commit config file
-    #   run: |
-    #     cp umd_workflows/.pre-commit-config.yaml ../.pre-commit-config.yaml &&
-    #     rm -rf umd_workflows
-
-    # - name: Run pre-commit
-    #   run: |   
-    #     sudo apt update && sudo apt install -y cppcheck clang-tidy
-    #   shell: bash
-    # - run: python -m pip install pre-commit cpplint
-    #   shell: bash
-    # - run: python -m pip freeze --local
-    #   shell: bash
-    
-    # - run: pre-commit run --show-diff-on-failure --color=always --config ../.pre-commit-config.yaml --from-ref origin/${{ github.base_ref }} --to-ref origin/${{ github.head_ref }}
-    #   shell: bash
     - name: Super Linter
       uses: github/super-linter@slim-v4
       env:
         DEFAULT_BRANCH: ${{ github.base_ref }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.UMDLIFEDEV_TOKEN }}
         VALIDATE_CPP: true
         VALIDATE_XML: true
         VALIDATE_YAML: true
