@@ -23,3 +23,12 @@ jobs:
         author_name: UMLDev Clang Robot
         author_email: dev@unmanned.life
         message: 'Committing clang-format changes'
+
+    - uses: actions/checkout@v3
+      with:
+        repository: umdlife/umd_workflows
+        path: ../umd_workflows
+
+    - uses: pre-commit/action@v3.0.0
+      with:
+        extra_args: --config ../umd_workflows/.pre-commit-config.yaml --from-ref ${{ github.base_ref }} --to-ref ${{ github.head_ref }}
