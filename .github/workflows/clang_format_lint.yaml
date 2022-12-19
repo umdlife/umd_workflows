@@ -26,7 +26,7 @@ jobs:
         message: 'Committing clang-format changes'
 
     - name: Super Linter
-      uses: github/super-linter@slim-v4
+      uses: github/super-linter/slim@v4
       env:
         DEFAULT_BRANCH: ${{ github.base_ref }}
         GITHUB_TOKEN: ${{ secrets.UMDLIFEDEV_TOKEN }}
