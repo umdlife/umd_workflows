@@ -9,7 +9,6 @@ jobs:
     - uses: actions/checkout@v3
       with:
         ref: ${{ github.head_ref }}
-        fetch-depth: 0
 
     - uses: DoozyX/clang-format-lint-action@v0.15
       with:
@@ -24,16 +23,25 @@ jobs:
         author_name: UMLDev Clang Robot
         author_email: dev@unmanned.life
         message: 'Committing clang-format changes'
+        
+  super-linter:
+    name: Lint Code Base
+    runs-on: self-hosted
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-    - name: Super Linter
-      uses: github/super-linter/slim@v4
-      env:
-        DEFAULT_BRANCH: ${{ github.base_ref }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        VALIDATE_CPP: true
-        VALIDATE_CLANG_FORMAT: true
-        VALIDATE_DOCKERFILE_HADOLINT: true
-        VALIDATE_PYTHON_BLACK: true
-        VALIDATE_PYTHON_FLAKE8: true
-        VALIDATE_XML: true
-        VALIDATE_YAML: true
+      - name: Super Linter
+        uses: github/super-linter/slim@v4
+        env:
+          DEFAULT_BRANCH: ${{ github.base_ref }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_CPP: true
+          VALIDATE_CLANG_FORMAT: true
+          VALIDATE_DOCKERFILE_HADOLINT: true
+          VALIDATE_PYTHON_BLACK: true
+          VALIDATE_PYTHON_FLAKE8: true
+          VALIDATE_XML: true
+          VALIDATE_YAML: true
