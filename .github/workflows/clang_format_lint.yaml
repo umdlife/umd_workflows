@@ -38,4 +38,4 @@ jobs:
 
     - uses: pre-commit/action@v3.0.0
       with:
-        extra_args: --config ../.pre-commit-config.yaml --from-ref ${{ github.base_ref }} --to-ref ${{ github.head_ref }}
+        extra_args: --config ../.pre-commit-config.yaml --all-files
