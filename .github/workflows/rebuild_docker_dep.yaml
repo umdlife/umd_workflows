@@ -27,9 +27,6 @@ on:
         required: true
       DOCKERHUB_TOKEN:
         required: true
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
 jobs:
   rebuild_docker:
     runs-on: self-hosted
