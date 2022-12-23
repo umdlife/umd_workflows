@@ -5,6 +5,10 @@ on:
     secrets:
       PAT:
         required: true
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+  
 jobs:
   clang-format-lint:
     name: Code Formatting
