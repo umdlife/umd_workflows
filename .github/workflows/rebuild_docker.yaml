@@ -33,9 +33,6 @@ on:
         required: true
       DOCKERHUB_TOKEN:
         required: true
-concurrency:
-  group: '${{ github.action }} @ ${{ github.event.pull_request.head.label || github.head_ref || github.ref }}'
-  cancel-in-progress: true
 jobs:
   rebuild_docker:
     runs-on: self-hosted
