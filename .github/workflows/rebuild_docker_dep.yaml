@@ -28,7 +28,7 @@ on:
       DOCKERHUB_TOKEN:
         required: true
 concurrency:
-  group: '${{ github.workflow }} @ ${{ github.event.pull_request.head.label || github.head_ref || github.ref }}'
+  group: '${{ github.action }} @ ${{ github.event.pull_request.head.label || github.head_ref || github.ref }}'
   cancel-in-progress: true
 jobs:
   rebuild_docker:
