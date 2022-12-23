@@ -10,6 +10,15 @@ jobs:
     - uses: actions/checkout@v3
       with:
         ref: ${{ github.head_ref }}
+    
+    - uses: actions/checkout@v3
+      with:
+        repository: umdlife/umd_workflows
+    
+    - name: Attach clang-format
+      run: |
+        cp umd_workflows/.clang-format .
+        rm -rf umd_workflows
 
     - uses: DoozyX/clang-format-lint-action@v0.15
       with:

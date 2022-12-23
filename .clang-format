@@ -1,0 +1,5 @@
+---
+BasedOnStyle: Google
+AlwaysBreakAfterDefinitionReturnType: All
+BreakBeforeBraces: Stroustrup
+ColumnLimit: 88
