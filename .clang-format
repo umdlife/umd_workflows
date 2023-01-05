@@ -2,4 +2,3 @@
 BasedOnStyle: Google
 AlwaysBreakAfterDefinitionReturnType: All
 BreakBeforeBraces: Allman
-ColumnLimit: 88
