@@ -59,7 +59,7 @@ jobs:
     - name: Push dev image from dev branch
       id: push-dev-image-dev-branch
       if: github.ref_name == 'dev'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v4
       with:
         context: ../
         file: ./docker/Dockerfile
@@ -71,7 +71,7 @@ jobs:
     - name: Push dev image from qa branch
       id: push-dev-image-qa-branch
       if: github.ref_name == 'qa'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v4
       with:
         context: ../
         file: ./docker/Dockerfile
@@ -83,7 +83,7 @@ jobs:
     - name: Push prod image from qa/main branch
       id: push-prod-image
       if: github.ref_name == 'qa' || github.ref_name == 'main'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v4
       with:
         context: ../
         file: ./docker/Dockerfile
