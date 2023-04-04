@@ -58,7 +58,7 @@ jobs:
 
     - name: Push dev image from dev branch
       id: push-dev-image-dev-branch
-      if: github.ref_name == 'dev'
+      if: github.ref_name == 'dev' || github.ref_name == 'qa'
       uses: docker/build-push-action@v4
       with:
         context: ../
@@ -67,18 +67,6 @@ jobs:
         push: true
         target: dev_stage
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-dev:${{ steps.autoversion.outputs.new_tag }} , ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-dev:latest
-
-    - name: Push dev image from qa branch
-      id: push-dev-image-qa-branch
-      if: github.ref_name == 'qa'
-      uses: docker/build-push-action@v4
-      with:
-        context: ../
-        file: ./docker/Dockerfile
-        platforms: linux/amd64
-        push: true
-        target: dev_stage
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-dev:${{ steps.autoversion.outputs.new_tag }}
 
     - name: Push prod image from qa/main branch
       id: push-prod-image
@@ -90,7 +78,7 @@ jobs:
         platforms: linux/amd64
         push: true
         target: prod_stage
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ steps.autoversion.outputs.new_tag }}
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ steps.autoversion.outputs.new_tag }} , ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
 
     - name: Bump version and push tag
       uses: anothrNick/github-tag-action@1.61.0
