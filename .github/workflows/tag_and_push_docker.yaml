@@ -67,6 +67,8 @@ jobs:
         push: true
         target: dev_stage
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-dev:${{ steps.autoversion.outputs.new_tag }} , ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-dev:latest
+        cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-dev:buildcache
+        cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-dev:buildcache,mode=max
 
     - name: Push prod image from qa/main branch
       id: push-prod-image
@@ -79,6 +81,8 @@ jobs:
         push: true
         target: prod_stage
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ steps.autoversion.outputs.new_tag }} , ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
+        cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:buildcache
+        cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:buildcache,mode=max
 
     - name: Bump version and push tag
       uses: anothrNick/github-tag-action@1.61.0
