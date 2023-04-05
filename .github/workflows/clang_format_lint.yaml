@@ -2,6 +2,11 @@ name: Run clang-format Linter
 
 on:
   workflow_call:
+    inputs:
+      regex_exclude:
+        description: 'Regex to exclude files from linting'
+        required: false
+        default: ''
     secrets:
       PAT:
         required: true
@@ -61,4 +66,4 @@ jobs:
           VALIDATE_PYTHON_FLAKE8: true
           VALIDATE_XML: true
           VALIDATE_YAML: true
-          FILTER_REGEX_EXCLUDE: .*src/common/.*.c
+          FILTER_REGEX_EXCLUDE: ${{ inputs.regex_exclude }}
