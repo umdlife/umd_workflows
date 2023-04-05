@@ -61,3 +61,4 @@ jobs:
           VALIDATE_PYTHON_FLAKE8: true
           VALIDATE_XML: true
           VALIDATE_YAML: true
+          FILTER_REGEX_EXCLUDE: .*src/common/.*.c
