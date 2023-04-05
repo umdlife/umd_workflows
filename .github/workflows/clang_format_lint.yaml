@@ -6,6 +6,7 @@ on:
       regex_exclude:
         description: 'Regex to exclude files from linting'
         required: false
+        type: string
         default: ''
     secrets:
       PAT:
