@@ -39,7 +39,7 @@ jobs:
         inplace: True
       continue-on-error: true
 
-    - uses: EndBug/add-and-commit@v9.1.1
+    - uses: EndBug/add-and-commit@v9.1.2
       with:
         author_name: UMLDev Clang Robot
         author_email: dev@unmanned.life
