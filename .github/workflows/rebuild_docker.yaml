@@ -7,10 +7,6 @@ on:
         description: 'Architecture to build'
         required: true
         type: string
-      stage:
-        description: 'Stage to build'
-        required: true
-        type: string
       push:
         description: 'Push to DockerHub'
         required: false
