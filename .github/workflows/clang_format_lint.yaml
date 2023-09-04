@@ -16,12 +16,12 @@ jobs:
     name: Code Formatting
     runs-on: self-hosted
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         ref: ${{ github.head_ref }}
         token: ${{ secrets.PAT }}
     
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         repository: umdlife/umd_workflows
         path: umd_workflows
@@ -51,7 +51,7 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
