@@ -7,6 +7,10 @@ on:
         description: 'Architecture to build'
         required: true
         type: string
+      stage:
+        description: 'Stage to build'
+        required: true
+        type: string
       push:
         description: 'Push to DockerHub'
         required: false
@@ -31,9 +35,6 @@ on:
         required: true
 jobs:
   rebuild_docker:
-    strategy:
-      matrix:
-        stage: [dev_stage, prod_stage]
     runs-on: self-hosted
     steps:
     - name: Check Out Current Repo 
@@ -50,7 +51,7 @@ jobs:
         context: ../
         file: ${{ inputs.file }}
         arch: ${{ inputs.arch }}
-        stage: ${{ matrix.stage }}
+        stage: ${{ inputs.stage }}
         push: ${{ inputs.push }}
         build_args: ${{ inputs.build_args }}
         dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
