@@ -49,8 +49,7 @@ runs:
       run: |
         if [[ ${{ inputs.push }} == "true" && 
               ${{ github.head_ref }} != "main" && 
-              ${{ github.head_ref }} != "qa" && 
-              ${{ github.head_ref }} != "dev" ]];
+              ${{ github.head_ref }} != "qa" ]];
         then
           echo "PUSH_TO_DOCKERHUB=true" >> $GITHUB_OUTPUT
         else
