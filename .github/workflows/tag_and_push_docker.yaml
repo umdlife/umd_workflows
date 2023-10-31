@@ -11,7 +11,7 @@ on:
         required: true
 jobs:
   rebuild_docker:
-    runs-on: self-hosted
+    runs-on: [self-hosted, amd64]
     steps:
     - name: Check Out Current Repo 
       uses: actions/checkout@v4
