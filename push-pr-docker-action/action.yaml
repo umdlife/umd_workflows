@@ -51,9 +51,9 @@ runs:
       with:
         context: ${{ inputs.context }}
         file: ${{ inputs.file }}
-        platforms: ${{ inputs.arch }}
+        platforms: linux/${{ inputs.arch }}
         target: ${{ inputs.stage }}
         build-args: ${{ inputs.build_args }}
         push: ${{ steps.get_docker_info.outputs.push }}
-        tags: ${{ inputs.dockerhub_username }}/${{ steps.get_docker_info.outputs.image_name }}:${{ steps.get_docker_info.outputs.tag_name }}
+        tags: ${{ inputs.dockerhub_username }}/${{ steps.get_docker_info.outputs.image_name }}:${{ steps.get_docker_info.outputs.tag_name }}-${{ inputs.arch }}
         cache-from: type=registry,ref=${{ inputs.dockerhub_username }}/${{ steps.get_docker_info.outputs.image_name }}:buildcache
