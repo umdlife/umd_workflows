@@ -45,7 +45,7 @@ jobs:
         ref: ${{ github.head_ref }}
 
     - name: Build and push
-      uses: umdlife/umd_workflows/push-pr-docker-action@main
+      uses: umdlife/umd_workflows/push-pr-docker-action@feat/add-arm64
       with:
         repository: ${{ github.event.repository.name }}
         context: ../
