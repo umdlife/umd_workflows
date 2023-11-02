@@ -2,6 +2,11 @@ name: Push Platform Docker
 
 on:
   workflow_call:
+    inputs:
+      arch:
+        description: 'Architecture to build'
+        required: true
+        type: string
     secrets:
       PAT: 
         required: true
@@ -11,7 +16,7 @@ on:
         required: true
 jobs:
   rebuild_docker:
-    runs-on: self-hosted
+    runs-on: [self-hosted, "${{ inputs.arch }}"]
     steps:
     - name: Check Out Current Repo 
       uses: actions/checkout@v4
@@ -63,12 +68,12 @@ jobs:
       with:
         context: ../
         file: ./docker/Dockerfile
-        platforms: linux/amd64
+        platforms: linux/${{ inputs.arch }}
         push: true
         target: dev_stage
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-dev:${{ steps.autoversion.outputs.new_tag }} , ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-dev:latest
-        cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-dev:buildcache
-        cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-dev:buildcache,mode=max
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-dev:${{ steps.autoversion.outputs.new_tag }}-${{ inputs.arch }} , ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-dev:latest-${{ inputs.arch }}
+        cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-dev:buildcache-${{ inputs.arch }}
+        cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-dev:buildcache-${{ inputs.arch }},mode=max
 
     - name: Push prod image from qa/main branch
       id: push-prod-image
@@ -77,12 +82,12 @@ jobs:
       with:
         context: ../
         file: ./docker/Dockerfile
-        platforms: linux/amd64
+        platforms: linux/${{ inputs.arch }}
         push: true
         target: prod_stage
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ steps.autoversion.outputs.new_tag }} , ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
-        cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:buildcache
-        cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:buildcache,mode=max
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ steps.autoversion.outputs.new_tag }}-${{ inputs.arch }} , ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest-${{ inputs.arch }}
+        cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:buildcache-${{ inputs.arch }}
+        cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:buildcache-${{ inputs.arch }},mode=max
 
     - name: Bump version and push tag
       uses: anothrNick/github-tag-action@1.67.0
