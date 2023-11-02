@@ -9,6 +9,14 @@ jobs:
   bump_version:
       runs-on: self-hosted
       steps:
+      - name: Check Out Current Repo 
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: '0'
+        submodules: recursive
+        token: ${{ secrets.PAT }}
+        ref: ${{ github.head_ref }}
+
       - name: Set Bump 
         run: |
           if [[ ${{ github.ref_name }} == "main" ]]; then
