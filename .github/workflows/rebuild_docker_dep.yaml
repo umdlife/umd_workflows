@@ -29,7 +29,7 @@ on:
         required: true
 jobs:
   rebuild_docker:
-    runs-on: [self-hosted, amd64]
+    runs-on: [self-hosted, "${{ inputs.arch }}"]
     steps:
     - name: Check Out Repo 
       uses: actions/checkout@v4
