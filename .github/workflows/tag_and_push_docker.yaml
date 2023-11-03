@@ -71,6 +71,7 @@ jobs:
         platforms: linux/${{ inputs.arch }}
         push: true
         target: dev_stage
+        build_args: ARCH=${{ inputs.arch }}
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-dev:${{ steps.autoversion.outputs.new_tag }}-${{ inputs.arch }} , ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-dev:latest-${{ inputs.arch }}
         cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-dev:buildcache-${{ inputs.arch }}
         cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-dev:buildcache-${{ inputs.arch }},mode=max
