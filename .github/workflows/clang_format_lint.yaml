@@ -42,7 +42,8 @@ jobs:
     #   continue-on-error: true
     - name: Clang Format Lint
       run: |
-        ./run-clang-format.py --clang-format-executable /usr/bin/clang-format -r --color always --style 'file' --inplace True --extensions 'h,c,cpp,hpp' --exclude ${{ inputs.regex_exclude }} '.'
+        apt install clang-format
+        python3 run-clang-format.py --clang-format-executable /usr/bin/clang-format -r --color always --style 'file' --inplace True --extensions 'h,c,cpp,hpp' --exclude ${{ inputs.regex_exclude }} '.'
         rm run-clang-format.py
 
     - uses: EndBug/add-and-commit@v9.1.3
