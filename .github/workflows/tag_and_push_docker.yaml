@@ -48,7 +48,6 @@ jobs:
         npm install semver
 
     - name: Bump version
-      # uses: anothrNick/github-tag-action@1.67.0
       uses: umdlife/umd_workflows/bump-action@feat/manual-bump
       id: autoversion
       env:
