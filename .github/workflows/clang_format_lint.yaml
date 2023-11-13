@@ -24,7 +24,6 @@ jobs:
     - uses: actions/checkout@v4
       with:
         repository: umdlife/umd_workflows
-        ref: feat/manual-clang-format
         path: umd_workflows
     
     - name: Attach clang-format
@@ -33,13 +32,6 @@ jobs:
         cp umd_workflows/run-clang-format.py .
         rm -rf umd_workflows
 
-    # - uses: DoozyX/clang-format-lint-action@v0.16
-    #   with:
-    #     source: '.'
-    #     extensions: 'h,c,cpp,hpp'
-    #     clangFormatVersion: 14
-    #     inplace: True
-    #   continue-on-error: true
     - name: Clang Format Lint
       env:
         EXCLUDE: ${{ inputs.regex_exclude }}
