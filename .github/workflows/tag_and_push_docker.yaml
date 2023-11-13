@@ -48,7 +48,7 @@ jobs:
         npm install semver
 
     - name: Bump version
-      uses: umdlife/umd_workflows/bump-action@feat/manual-bump
+      uses: umdlife/umd_workflows/bump-action@main
       id: autoversion
       env:
         GITHUB_TOKEN: ${{ secrets.PAT }}
