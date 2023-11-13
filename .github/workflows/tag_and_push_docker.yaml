@@ -43,6 +43,7 @@ jobs:
         elif [[ ${{ github.ref_name }} == "dev" ]]; then
           echo "BUMP=patch" >> $GITHUB_ENV
         fi
+        npm install semver
 
     - name: Bump version
       # uses: anothrNick/github-tag-action@1.67.0
