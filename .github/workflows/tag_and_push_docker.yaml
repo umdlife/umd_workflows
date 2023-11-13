@@ -43,6 +43,8 @@ jobs:
         elif [[ ${{ github.ref_name }} == "dev" ]]; then
           echo "BUMP=patch" >> $GITHUB_ENV
         fi
+        sudo apt update
+        sudo apt install -y npm
         npm install semver
 
     - name: Bump version
