@@ -1,4 +1,0 @@
----
-BasedOnStyle: Google
-AlwaysBreakAfterDefinitionReturnType: All
-BreakBeforeBraces: Allman
