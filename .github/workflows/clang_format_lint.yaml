@@ -41,10 +41,12 @@ jobs:
     #     inplace: True
     #   continue-on-error: true
     - name: Clang Format Lint
+      env:
+        EXCLUDE: ${{ inputs.regex_exclude }}
       run: |
         sudo apt update
         sudo apt install -y clang-format
-        python3 run-clang-format.py --clang-format-executable /usr/bin/clang-format -r --color always --style 'file' --inplace True --extensions 'h,c,cpp,hpp' '.'
+        python3 run-clang-format.py --clang-format-executable /usr/bin/clang-format -r --color always --style 'file' --inplace True --extensions 'h,c,cpp,hpp' --exclude "$EXCLUDE" '.'
         rm run-clang-format.py
 
     - uses: EndBug/add-and-commit@v9.1.3
