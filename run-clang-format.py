@@ -355,7 +355,7 @@ def main():
 
     if not files:
         print_trouble(parser.prog, 'No files found', use_colors=colored_stderr)
-        return ExitStatus.TROUBLE
+        return ExitStatus.SUCCESS
 
     if not args.quiet:
       print('Processing %s files: %s' % (len(files), ', '.join(files)))
