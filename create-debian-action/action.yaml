@@ -1,0 +1,23 @@
+name: "Create Debian Packages"
+description: "Creates debains for ROS2 packages"
+inputs:
+  ros_distro:
+    description: "ROS distributions to create a release."
+    required: true
+  path_src:
+    description: "Path to the packages source code"
+    required: false
+    default: "."
+  path_custom_resources:
+    description: "Path to the yaml file with custom packages"
+    required: true
+  list_packages:
+    description: "List of ROS2 packages to create debians"
+    required: true
+  list_binaries:
+    description: "List third party binaries to install"
+    required: false
+    default: ""
+runs:
+  using: "docker"
+  image: "Dockerfile"
