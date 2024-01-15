@@ -1,12 +1,11 @@
 #!/bin/bash
-
+rosdep update
 rosdep keys --from-paths /umd2_ws/src --ignore-src --rosdistro ${INPUT_ROS_DISTRO} | \
   xargs rosdep resolve --rosdistro ${INPUT_ROS_DISTRO} | \
   awk '/#apt/{getline; print}' > /rosdep_requirements.txt
 
-apt update 
-apt install -y --no-install-recommends $(cat /rosdep_requirements.txt)
-apt install -y --no-install-recommends python3-pip dpkg-dev debhelper dh-python ${INPUT_LIST_BINARIES}
+apk add --no-cache $(cat /rosdep_requirements.txt)
+apk add --no-cache dpkg-dev debhelper dh-python ${INPUT_LIST_BINARIES}
 # ln -snf /usr/lib/x86_64-linux-gnu/libopus.a /usr/local/lib
 pip3 install rosdep bloom
 echo "yaml file:///rosdep.yaml" >> /etc/ros/rosdep/sources.list.d/50-my-packages.list
