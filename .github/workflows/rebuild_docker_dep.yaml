@@ -69,5 +69,7 @@ jobs:
         stage: ${{ inputs.stage }}
         push: ${{ inputs.push }}
         build_args: ARCH=${{ inputs.arch }}
+        secrets: |
+          "github_token=${{ secrets.PAT }}"
         dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
         dockerhub_token: ${{ secrets.DOCKERHUB_TOKEN }}

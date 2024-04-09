@@ -72,6 +72,8 @@ jobs:
         push: true
         target: dev_stage
         build-args: ARCH=${{ inputs.arch }}
+        secrets: |
+          "github_token=${{ secrets.PAT }}"
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-dev:${{ steps.autoversion.outputs.new_tag }}-${{ inputs.arch }} , ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-dev:latest-${{ inputs.arch }}
         cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-dev:buildcache-${{ inputs.arch }}
         cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}-dev:buildcache-${{ inputs.arch }},mode=max
@@ -87,6 +89,8 @@ jobs:
         push: true
         target: prod_stage
         build-args: ARCH=${{ inputs.arch }}
+        secrets: |
+          "github_token=${{ secrets.PAT }}"
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ steps.autoversion.outputs.new_tag }}-${{ inputs.arch }} , ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest-${{ inputs.arch }}
         cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:buildcache-${{ inputs.arch }}
         cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:buildcache-${{ inputs.arch }},mode=max
