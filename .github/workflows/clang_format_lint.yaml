@@ -48,7 +48,7 @@ jobs:
   super-linter:
     needs: clang-format-lint
     name: Lint Code Base
-    runs-on: self-hosted
+    runs-on: [self-hosted, amd64]
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
