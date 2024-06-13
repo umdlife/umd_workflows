@@ -8,6 +8,9 @@ jobs:
   label_pr:
     runs-on: self-hosted
     steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: umdlife/umd_workflows
       - name: Labeler
         uses: actions/labeler@v5.0.0
         with:
