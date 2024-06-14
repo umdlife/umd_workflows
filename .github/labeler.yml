@@ -7,7 +7,7 @@ bug:
   - head-branch: ["^bug", "bug", "^fix", "fix", "^hotfix", "hotfix"]
 
 maintenance:
-  - head-branch: ["^dependabot", "dependabot"]
+  - head-branch: ["^chore", "chore"]
 
 # Add 'release' label to any PR that is opened against the `main` branch
 release:
