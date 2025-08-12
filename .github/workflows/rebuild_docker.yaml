@@ -38,7 +38,7 @@ jobs:
     runs-on: [self-hosted, "${{ inputs.arch }}"]
     steps:
     - name: Check Out Current Repo 
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         submodules: recursive
         token: ${{ secrets.PAT }}
